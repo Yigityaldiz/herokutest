@@ -5,7 +5,8 @@ import { baseURL } from "./utils/constent";
 
 export default function App() {
   const [input, setInput] = useState("");
-  const [tasks, setTasks] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [updateUI, setUpdateUI] = useState(false);
 
   useEffect(() => {
     axios
@@ -14,12 +15,20 @@ export default function App() {
         setTasks(res.data);
         console.log(res.data);
       })
-      .catch((Error) => console.log("uSEEFFECT", Error));
-  }, []);
+      .catch((Error) => console.log("App.jsx , useEffect Error: ", Error));
+  }, [updateUI]);
+
+  const addTask = () => {
+    axios.post(`${baseURL}/save`, { task: input }).then((res) => {
+      console.log(res.data);
+      setInput("");
+      setUpdateUI((prevState) => !prevState);
+    });
+  };
 
   return (
-    <main className=" flex items-center justify-center h-screen w-screen">
-      <div className=" justify-items-center h-[60%] w-[35%] ">
+    <main className=" flex items-center justify-center h-full w-screen">
+      <div className=" justify-items-center h-[50%] w-[35%] ">
         <h1 className="title text-center m-4">Crud Operator </h1>
         <div className=" input_holder p-4">
           <input
@@ -28,10 +37,19 @@ export default function App() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <button type="submit">Add task</button>
+          <button onClick={addTask} type="submit">
+            Add task
+          </button>
         </div>
         <ul>
-          <List task="something" />
+          {tasks.map((task) => (
+            <List
+              key={task._id}
+              id={task._id}
+              task={task.task}
+              setUpdateUI={setUpdateUI}
+            />
+          ))}
         </ul>
       </div>
     </main>
