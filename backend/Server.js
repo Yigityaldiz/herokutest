@@ -21,6 +21,6 @@ mongoose.connect(process.env.MONGO_URI, {
 // Remove the useRouter function, it's not needed.
 
 // Use the router directly
-app.use("/api", router);
+app.use("/", router);
 
 app.listen(PORT, () => console.log(`Listening port : ${PORT}`));

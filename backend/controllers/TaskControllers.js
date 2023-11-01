@@ -16,25 +16,27 @@ module.exports.saveTask = async (req, res) => {
   }
 };
 
-module.exports.updateTask = async (req, res) => {
-    const { id } = req.params
-    const {task} = req.body;
-  
-  TaskModel.findByIdAndUpdate(id , {task})
-  try { () => res.send("updated succesfully")
-    
+module.exports.updateTasks = async (req, res) => {
+  const { id } = req.params;
+  const { task } = req.body;
+
+  try {
+    await TaskModel.findByIdAndUpdate(id, { task });
+    res.send("updated successfully");
   } catch (error) {
-     console.log(error);
+    console.log(error);
+    res.status(500).send("Something went wrong");
   }
-  };
+};
+
 module.exports.deleteTask = async (req, res) => {
-    const { id } = req.params
-   
-  
-  TaskModel.findByIdAndDelete(id , {task})
-  try { () => res.send("delete succesfully")
-    
+  const { id } = req.params;
+
+  try {
+    await TaskModel.findByIdAndDelete(id);
+    res.send("Deleted successfully");
   } catch (error) {
-     console.log(error);
+    console.log(error);
+    res.status(500).send({ error: error, msg: "Something went wrong" });
   }
-  };
+};
