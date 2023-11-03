@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { getTasks, saveTask, deleteTask, updateTasks } = require("../controllers/TaskControllers");
+const { getTasks, saveTask, deleteTask, updateTask } = require("../controllers/TaskControllers");
 
 // Create a new instance of the router
 const router = Router();
@@ -17,8 +17,8 @@ router.post("/save", async (req, res, next) => {
     await saveTask(req, res, next);
 });
 
-router.patch("/update/:id", async (req, res, next) => {
-    await updateTasks(req, res, next);
+router.put("/update/:id", async (req, res, next) => {
+    await updateTask(req, res, next);
 });
 
 router.delete("/delete/:id", async (req, res, next) => {
